@@ -7,6 +7,8 @@ defmodule Tabula.Mixfile do
      elixir: "~> 1.0",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
+     description: "Pretty printer for maps/structs collections",
+     package: package,
      deps: deps]
   end
 
@@ -28,5 +30,11 @@ defmodule Tabula.Mixfile do
   # Type `mix help deps` for more examples and options
   defp deps do
     []
+  end
+
+  defp package do
+    [maintainers: ["Adam Rutkowski"],
+     licenses: ["MIT"],
+     links: %{"GitHub" => "https://github.com/aerosol/Tabula"}]
   end
 end
