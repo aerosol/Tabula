@@ -11,19 +11,19 @@ It's a weekend-over-beer-project of mine, loosely based on
 
   1. Add Tabula to your list of dependencies in mix.exs:
 
-```elixir
-def deps do
-    [{:tabula, "~> 1.0.0"}]
-end
-```
+   ```elixir
+   def deps do
+       [{:tabula, "~> 1.0.0"}]
+   end
+   ```
 
   2. Ensure Tabula is started before your application:
 
-```elixir
-def application do
-  [applications: [:tabula]]
-end
-```
+   ```elixir
+   def application do
+     [applications: [:tabula]]
+   end
+   ```
 
 Let's get down to business :beers:
 
