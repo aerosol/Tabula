@@ -21,7 +21,7 @@ It's a weekend-over-beer-project of mine, loosely based on
 
    ```elixir
    def application do
-     [applications: [:tabula]]
+      [applications: [:tabula]]
    end
    ```
 
