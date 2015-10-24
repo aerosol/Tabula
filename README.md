@@ -13,7 +13,7 @@ It's a weekend-over-beer-project of mine, loosely based on
 
 ```elixir
 def deps do
-    [{:tabula, "~> 0.0.1"}]
+    [{:tabula, "~> 1.0.0"}]
 end
 ```
 
