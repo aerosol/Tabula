@@ -30,14 +30,12 @@ defmodule Tabula do
 
   defmacro __using__(opts) do
     quote do
-      @opts unquote(opts)
-      def opts, do: @opts
       def print_table(rows) do
-        unquote(__MODULE__).print_table(rows, opts)
+        unquote(__MODULE__).print_table(rows, unquote(opts))
       end
       def print_table(rows, override_opts) do
         unquote(__MODULE__).print_table(
-          rows, Keyword.merge(opts, override_opts)
+          rows, Keyword.merge(unquote(opts), override_opts)
         ) end
     end
   end
