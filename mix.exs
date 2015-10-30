@@ -3,13 +3,14 @@ defmodule Tabula.Mixfile do
 
   def project do
     [app: :tabula,
-     version: "1.0.1",
-     elixir: "~> 1.0",
-     build_embedded: Mix.env == :prod,
-     start_permanent: Mix.env == :prod,
-     description: "Pretty printer for maps/structs collections",
-     package: package,
-     deps: deps]
+      version: "1.0.1",
+      elixir: "~> 1.0",
+      build_embedded: Mix.env == :prod,
+      start_permanent: Mix.env == :prod,
+      description: "Pretty printer for maps/structs collections",
+      package: package,
+      deps: deps,
+      docs: [extras: ["README.md"]]]
   end
 
   # Configuration for the OTP application
@@ -29,7 +30,8 @@ defmodule Tabula.Mixfile do
   #
   # Type `mix help deps` for more examples and options
   defp deps do
-    []
+    [{:earmark, "~> 0.1", only: :dev},
+      {:ex_doc, "~> 0.10", only: :dev}]
   end
 
   defp package do
