@@ -120,13 +120,11 @@ defmodule TabulaTest do
   end
 
   test "Long auto-indices will be aligned properly" do
-    [cols, _, _] = 1..10000
-                   |> Enum.map(&(%{"index" => &1}))
-                   |> Tabula.render_table(["index", "#"], [])
-    expected = """
-    index |     #
-    """
-    assert List.to_string(cols) == expected
+    l = String.length("10000")
+    rows = 1..10000
+           |> Enum.map(&(%{"index" => &1}))
+    widths = Tabula.max_widths(["#", "index"], rows)
+    assert widths == [l, l]
   end
 
 end
