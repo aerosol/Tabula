@@ -68,7 +68,20 @@ defmodule Tabula do
 
   end
 
-  def render_row(cells, style_element, formatters, opts) do
+  def max_widths(cols, rows) do
+    max_index = rows
+                |> length
+                |> strlen
+    cols
+    |> map(fn k ->
+      max([
+        strlen(k), max_index
+        | map(rows, &(Map.get(&1, k) |> strlen))
+      ])
+    end)
+  end
+
+  defp render_row(cells, style_element, formatters, opts) do
     separator = style(style_element, opts)
     cells
     |> zip(formatters)
@@ -77,7 +90,7 @@ defmodule Tabula do
     |> concat('\n')
   end
 
-  def formatters(widths, _opts) do
+  defp formatters(widths, _opts) do
     widths
     |> map(fn w ->
       fn (@index=cell) ->
@@ -93,23 +106,10 @@ defmodule Tabula do
     end)
   end
 
-  def spacers(widths, opts) do
+  defp spacers(widths, opts) do
     map(widths, &(Stream.repeatedly(fn -> style(:spacer, opts) end))
                 |> Stream.take(&1)
                 |> join)
-  end
-
-  def max_widths(cols, rows) do
-    max_index = rows
-                |> length
-                |> strlen
-    cols
-    |> map(fn k ->
-      max([
-        strlen(k), max_index
-        | map(rows, &(Map.get(&1, k) |> strlen))
-      ])
-    end)
   end
 
   defp strlen(x) when is_binary(x), do: x |> String.length
