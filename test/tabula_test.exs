@@ -12,36 +12,29 @@ defmodule TabulaTest do
   end
 
   test "Columns can be provided by the user or discovered automatically" do
-    auto = fn ->
-      Tabula.print_table @rows
-    end
-    man = fn ->
-      Tabula.print_table @rows, only: Enum.sort(@cols)
-    end
-    assert capture_io(auto) == capture_io(man)
+    auto = Tabula.render_table @rows
+    man = Tabula.render_table @rows, only: Enum.sort(@cols)
+    assert auto == man
   end
 
   test "Special column '#' can be provided to enumerate rows" do
-    table = fn ->
-      Tabula.print_table(@rows, only: ["#"|@cols])
-    end
+    table = Tabula.render_table(@rows, only: ["#"|@cols])
     expect = """
       # | name    | age | city    
     ----+---------+-----+---------
       1 | Adam    |  32 | Warsaw  
       2 | Yolanda |  28 | New York
-
     """
-    assert capture_io(table) == expect
+    assert table == expect
   end
 
-  test "Github Markdown style can be applied" do
+  test "Print function outputs valid table to stdout" do
     table = fn ->
-      Tabula.print_table(@rows, only: Enum.sort(@cols), style: :github_md)
+      Tabula.print_table @rows
     end
     expect = """
     age | city     | name   
-    --- | -------- | -------
+    ----+----------+--------
      32 | Warsaw   | Adam   
      28 | New York | Yolanda
 
@@ -49,18 +42,26 @@ defmodule TabulaTest do
     assert capture_io(table) == expect
   end
 
+  test "Github Markdown style can be applied" do
+    table = Tabula.render_table(@rows, only: Enum.sort(@cols), style: :github_md)
+    expect = """
+    age | city     | name   
+    --- | -------- | -------
+     32 | Warsaw   | Adam   
+     28 | New York | Yolanda
+    """
+    assert table == expect
+  end
+
   test "Columns not found are represented by `nil`" do
-    table = fn ->
-      Tabula.print_table(@rows, only: ["phone", "email"])
-    end
+    table = Tabula.render_table(@rows, only: ["phone", "email"])
     expect = """
     phone | email
     ------+------
     nil   | nil  
     nil   | nil  
-
     """
-    assert capture_io(table) == expect
+    assert table == expect
   end
 
   test "Crash when there are no columns provided" do
@@ -74,6 +75,8 @@ defmodule TabulaTest do
     end
     assert Foo.__info__(:functions) |> Enum.member?({:print_table, 1})
     assert Foo.__info__(:functions) |> Enum.member?({:print_table, 2})
+    assert Foo.__info__(:functions) |> Enum.member?({:render_table, 1})
+    assert Foo.__info__(:functions) |> Enum.member?({:render_table, 2})
   end
 
   test "Options will be merged" do
@@ -83,13 +86,13 @@ defmodule TabulaTest do
       @data [%{"hello" => "world", "cruel" => true}]
 
       def t1 do
-        @data |> print_table
+        @data |> render_table
       end
       def t2 do
-        @data |> print_table(only: ["cruel"])
+        @data |> render_table(only: ["cruel"])
       end
       def t3 do
-        @data |> print_table(only: ["#", "cruel"], style: :org_mode)
+        @data |> render_table(only: ["#", "cruel"], style: :org_mode)
       end
     end
 
@@ -97,26 +100,23 @@ defmodule TabulaTest do
     cruel | hello
     ----- | -----
     true  | world
-
     """
 
     e2 = """
     cruel
     -----
     true 
-
     """
 
     e3 = """
       # | cruel
     ----+------
       1 | true 
-
     """
 
-    assert capture_io(&Bar.t1/0) == e1
-    assert capture_io(&Bar.t2/0) == e2
-    assert capture_io(&Bar.t3/0) == e3
+    assert Bar.t1 == e1
+    assert Bar.t2 == e2
+    assert Bar.t3 == e3
   end
 
   test "Long auto-indices will be aligned properly" do

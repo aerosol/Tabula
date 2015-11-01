@@ -35,23 +35,43 @@ defmodule Tabula do
       end
       def print_table(rows, override_opts) do
         unquote(__MODULE__).print_table(
-          rows, Keyword.merge(unquote(opts), override_opts)
-        ) end
+          rows, Keyword.merge(unquote(opts), override_opts))
+      end
+      def render_table(rows) do
+        unquote(__MODULE__).render_table(rows, unquote(opts))
+      end
+      def render_table(rows, override_opts) do
+        unquote(__MODULE__).render_table(
+          rows, Keyword.merge(unquote(opts), override_opts))
+      end
     end
   end
 
-  def print_table([first|_]=rows, opts \\ []) do
-    cols = case opts[:only] do
-      nil ->
-        first |> Map.keys
-      cols when is_list(cols) ->
-        cols
-    end
-    render_table(rows, cols, opts)
+  def print_table(rows, opts \\ []) do
+    render_table(rows, opts)
     |> IO.puts
   end
 
-  def render_table(rows, [_|_]=cols, opts) do
+  def render_table(rows, opts \\ []) do
+    cols = extract_cols(rows, opts)
+    _render_table(rows, cols, opts)
+    |> :erlang.list_to_binary
+  end
+
+  def max_widths(cols, rows) do
+    max_index = rows
+    |> length
+    |> strlen
+    cols
+    |> map(fn k ->
+      max([
+        strlen(k), max_index
+        | map(rows, &(Map.get(&1, k) |> strlen))
+      ])
+    end)
+  end
+
+  defp _render_table(rows, [_|_]=cols, opts) do
     widths     = max_widths(cols, rows)
     formatters = widths |> formatters(opts)
     spacers    = widths |> spacers(opts)
@@ -68,17 +88,13 @@ defmodule Tabula do
 
   end
 
-  def max_widths(cols, rows) do
-    max_index = rows
-                |> length
-                |> strlen
-    cols
-    |> map(fn k ->
-      max([
-        strlen(k), max_index
-        | map(rows, &(Map.get(&1, k) |> strlen))
-      ])
-    end)
+  defp extract_cols([first|_]=_rows, opts) do
+    case opts[:only] do
+      nil ->
+        first |> Map.keys
+      cols when is_list(cols) ->
+        cols
+    end
   end
 
   defp render_row(cells, style_element, formatters, opts) do
