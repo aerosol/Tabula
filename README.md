@@ -118,4 +118,5 @@ If time permits I would like to implement the following extensions (contribution
 ## Authors
 
 Adam Rutkowski - https://twitter.com/hq1aerosol
+
 Adrian Gruntkowski - https://twitter.com/adrgrunt
