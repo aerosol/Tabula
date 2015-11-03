@@ -3,7 +3,7 @@ defmodule Tabula.Mixfile do
 
   def project do
     [app: :tabula,
-      version: "2.0.1",
+      version: "2.0.2",
       elixir: "~> 1.0",
       build_embedded: Mix.env == :prod,
       start_permanent: Mix.env == :prod,
@@ -30,8 +30,9 @@ defmodule Tabula.Mixfile do
   #
   # Type `mix help deps` for more examples and options
   defp deps do
-    [{:earmark, "~> 0.1", only: :dev},
-      {:ex_doc, "~> 0.10", only: :dev}]
+    []
+    #[{:earmark, "~> 0.1", only: :dev},
+      #{:ex_doc, "~> 0.10", only: :dev}]
   end
 
   defp package do
