@@ -13,7 +13,7 @@ It's a weekend-over-beer-project of mine, loosely based on
 
    ```elixir
    def deps do
-       [{:tabula, "~> 1.0.0"}]
+       [{:tabula, "~> 2.0.1"}]
    end
    ```
 
@@ -101,6 +101,9 @@ iex(1)> Repo.all(Account) |> Tabula.print_table(only: ["#", :name, :key])
   2 | Thomas   | c0ae1f149298ffded9f41a828cf5
 ```
 
+You can use `render_table` to return an `iolist` of the rendered data,
+if you wish not to write to stdout.
+
 If in doubt, please consult the tests.
 
 ## MaybeFutureFeatures
@@ -112,6 +115,7 @@ If time permits I would like to implement the following extensions (contribution
   - Cell contents wrapping
   - Option to define max table width
 
-## Contact
+## Authors
 
-Author: Adam Rutkowski `<hq@mtod.org>`, freenode: `hq1`
+Adam Rutkowski - https://twitter.com/hq1aerosol
+Adrian Gruntkowski - https://twitter.com/adrgrunt
