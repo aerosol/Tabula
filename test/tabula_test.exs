@@ -8,7 +8,7 @@ defmodule TabulaTest do
   @cols ["name", "age", "city"]
 
   test "Calculate max widths properly" do
-    assert Tabula.max_widths(@cols, @rows) == [7, 3, 8]
+    assert Tabula.Renderer.max_widths(@cols, @rows) == [7, 3, 8]
   end
 
   test "Columns can be provided by the user or discovered automatically" do
@@ -123,7 +123,7 @@ defmodule TabulaTest do
     l = String.length("10000")
     rows = 1..10000
            |> Enum.map(&(%{"index" => &1}))
-    widths = Tabula.max_widths(["#", "index"], rows)
+    widths = Tabula.Renderer.max_widths(["#", "index"], rows)
     assert widths == [l, l]
   end
 
