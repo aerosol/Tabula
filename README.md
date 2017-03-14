@@ -115,8 +115,10 @@ If time permits I would like to implement the following extensions (contribution
   - Cell contents wrapping
   - Option to define max table width
 
-## Authors
+## Contributors
 
 Adam Rutkowski - https://twitter.com/hq1aerosol
 
 Adrian Gruntkowski - https://twitter.com/adrgrunt
+
+Wojtek Mach - https://twitter.com/wojtekmach
