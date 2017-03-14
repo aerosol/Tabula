@@ -104,7 +104,8 @@ iex(1)> Repo.all(Account) |> Tabula.print_table(only: ["#", :name, :key])
 You can use `render_table` to return an `iolist` of the rendered data,
 if you wish not to write to stdout.
 
-If in doubt, please consult the tests.
+Struct values will be printed using their string representation, provided
+`String.Chars` is implemented.  If in doubt, please consult the tests.
 
 ## MaybeFutureFeatures
 
