@@ -2,6 +2,10 @@ defmodule TabulaTest do
   use ExUnit.Case
   import ExUnit.CaptureIO
 
+  defmodule Point do
+    defstruct [:x, :y]
+  end
+
   @rows  [%{"name" => "Adam", "age" => 32, "city" => "Warsaw"},
           %{"name" => "Yolanda", "age" => 28, "city" => "New York"}]
 
@@ -125,6 +129,20 @@ defmodule TabulaTest do
            |> Enum.map(&(%{"index" => &1}))
     widths = Tabula.max_widths(["#", "index"], rows)
     assert widths == [l, l]
+  end
+
+  test "Uses string representation on structs, if available" do
+    rows = [%{name: "ecto", version: Version.parse!("2.0.4"), point: %Point{x: 0, y: 0}},
+            %{name: "phoenix", version: Version.parse!("1.2.0"), point: %Point{x: 1, y: 0}}]
+    table = Tabula.render_table(rows)
+
+    expect = """
+    :name   | :point                        | :version
+    --------+-------------------------------+---------
+    ecto    | %TabulaTest.Point{x: 0, y: 0} | 2.0.4   
+    phoenix | %TabulaTest.Point{x: 1, y: 0} | 1.2.0   
+    """
+    assert table == expect
   end
 
 end

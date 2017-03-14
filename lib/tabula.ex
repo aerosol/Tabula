@@ -1,5 +1,4 @@
 defmodule Tabula do
-
   import Enum, only: [
     concat: 2,
     intersperse: 2,
@@ -106,18 +105,32 @@ defmodule Tabula do
     |> concat('\n')
   end
 
+  defp render_cell(v) when is_binary(v),
+    do: v
+  defp render_cell(v) when is_number(v),
+    do: inspect(v)
+  defp render_cell(%{__struct__: _} = v) do
+    try do
+      to_string(v)
+    rescue
+      Protocol.UndefinedError ->
+        inspect(v)
+    end
+  end
+  defp render_cell(v),
+    do: inspect(v)
+
   defp formatters(widths, _opts) do
-    widths
-    |> map(fn w ->
-      fn (@index=cell) ->
+    map(widths, fn w ->
+      fn @index=cell ->
            # need to rjust '#' orelse github fails to render
            String.rjust(cell, w)
-         (cell) when is_binary(cell) ->
+         cell when is_binary(cell) ->
            String.ljust(cell, w)
-         (cell) when is_number(cell) ->
-           String.rjust(cell |> inspect, w)
-         (cell) ->
-           String.ljust(cell |> inspect, w)
+         cell when is_number(cell) ->
+           cell |> render_cell() |> String.rjust(w)
+         cell ->
+           cell |> render_cell() |> String.ljust(w)
       end
     end)
   end
@@ -128,8 +141,7 @@ defmodule Tabula do
                 |> join)
   end
 
-  defp strlen(x) when is_binary(x), do: x |> String.length
-  defp strlen(x), do: strlen(inspect x)
+  defp strlen(x), do: render_cell(x) |> String.length()
 
   defp values(cols, {row, index}, _opts) do
     cols
