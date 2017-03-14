@@ -12,7 +12,7 @@ defmodule Tabula.Mixfile do
       description: "Pretty printer for maps/structs collections",
       package: package(),
       deps: deps(),
-      docs: [source_ref: "v#{@version}",
+      docs: [source_ref: "#{@version}",
              source_url: "https://github.com/aerosol/Tabula",
              main: "readme",
              extras: ["README.md"]]]
