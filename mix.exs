@@ -8,8 +8,8 @@ defmodule Tabula.Mixfile do
       build_embedded: Mix.env == :prod,
       start_permanent: Mix.env == :prod,
       description: "Pretty printer for maps/structs collections",
-      package: package,
-      deps: deps,
+      package: package(),
+      deps: deps(),
       docs: [extras: ["README.md"]]]
   end
 
