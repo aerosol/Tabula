@@ -1,16 +1,21 @@
 defmodule Tabula.Mixfile do
   use Mix.Project
 
+  @version "2.1.0"
+
   def project do
     [app: :tabula,
-      version: "2.1.0",
+      version: @version,
       elixir: "~> 1.3",
       build_embedded: Mix.env == :prod,
       start_permanent: Mix.env == :prod,
       description: "Pretty printer for maps/structs collections",
       package: package(),
       deps: deps(),
-      docs: [extras: ["README.md"]]]
+      docs: [source_ref: "#{@version}",
+             source_url: "https://github.com/aerosol/Tabula",
+             main: "readme",
+             extras: ["README.md"]]]
   end
 
   # Configuration for the OTP application
