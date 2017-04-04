@@ -110,11 +110,10 @@ defmodule Tabula do
   defp render_cell(v) when is_number(v),
     do: inspect(v)
   defp render_cell(%{__struct__: _} = v) do
-    try do
+    if String.Chars.impl_for(v) do
       to_string(v)
-    rescue
-      Protocol.UndefinedError ->
-        inspect(v)
+    else
+      inspect(v)
     end
   end
   defp render_cell(v),
