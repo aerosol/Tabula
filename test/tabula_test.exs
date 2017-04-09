@@ -145,4 +145,19 @@ defmodule TabulaTest do
     assert table == expect
   end
 
+  test "Support keyword lists and preserve ordering of columns" do
+    rows = [
+      [name: "ecto", point: %Point{x: 0, y: 0}, version: Version.parse!("2.0.4")],
+      [name: "phoenix", point: %Point{x: 1, y: 0}, version: Version.parse!("1.2.0")]
+    ]
+    table = Tabula.render_table(rows)
+
+    expect = """
+    :name   | :point                        | :version
+    --------+-------------------------------+---------
+    ecto    | %TabulaTest.Point{x: 0, y: 0} | 2.0.4   
+    phoenix | %TabulaTest.Point{x: 1, y: 0} | 1.2.0   
+    """
+    assert table == expect
+  end
 end
