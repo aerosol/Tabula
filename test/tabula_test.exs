@@ -173,4 +173,15 @@ defmodule TabulaTest do
     """
     assert table == expect
   end
+
+  test "Tabula.Row.get" do
+    assert Tabula.Row.get(%{x: 0, y: 0}, :x) == 0
+    assert Tabula.Row.get([x: 0, y: 0], :x) == 0
+  end
+
+  test "Tabula.Row.keys" do
+    assert Tabula.Row.keys([x: 0, y: 0]) == ~w(x y)a
+    assert Tabula.Row.keys(%{x: 0, y: 0}) == ~w(x y)a
+    assert Tabula.Row.keys(%Point{x: 0, y: 0}) == ~w(x y)a
+  end
 end
