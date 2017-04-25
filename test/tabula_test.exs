@@ -160,4 +160,17 @@ defmodule TabulaTest do
     """
     assert table == expect
   end
+
+  test "Prints the expected results for collections of Structs" do
+    rows = [%Point{x: 0, y: 0}, %Point{x: 1, y: 0}]
+    table = Tabula.render_table(rows)
+
+    expect = """
+    :x | :y
+    ---+---
+     0 |  0
+     1 |  0
+    """
+    assert table == expect
+  end
 end
