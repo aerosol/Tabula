@@ -46,6 +46,21 @@ defmodule Tabula do
     end
   end
 
+  defprotocol Row do
+    def get(row, col, default \\ nil)
+    def keys(row)
+  end
+
+  defimpl Row, for: Map do
+    def get(row, col, default \\ nil), do: row |> Map.get(col, default)
+    def keys(row), do: row |> Map.keys
+  end
+
+  defimpl Row, for: List do
+    def get(row, col, default \\ nil), do: row |> Keyword.get(col, default)
+    def keys(row), do: row |> Keyword.keys
+  end
+
   def print_table(rows, opts \\ []) do
     render_table(rows, opts)
     |> IO.puts
@@ -58,14 +73,10 @@ defmodule Tabula do
   end
 
   def max_widths(cols, rows) do
-    max_index = rows
-    |> length
-    |> strlen
-    cols
-    |> map(fn k ->
+    max_index = rows |> length |> strlen
+    cols |> map(fn k ->
       max([
-        strlen(k), max_index
-        | map(rows, &(Map.get(&1, k) |> strlen))
+        strlen(k), max_index | map(rows, &(Row.get(&1, k) |> strlen))
       ])
     end)
   end
@@ -81,18 +92,16 @@ defmodule Tabula do
       rows
       |> with_index
       |> map(fn indexed_row ->
-              values(cols, indexed_row, opts)
+              values(cols, indexed_row)
               |> render_row(:row, formatters, opts)
              end) ]
 
   end
 
-  defp extract_cols([first|_]=_rows, opts) do
+  defp extract_cols([h|_], opts) do
     case opts[:only] do
-      nil ->
-        first |> Map.keys
-      cols when is_list(cols) ->
-        cols
+      nil -> h |> Row.keys
+      cols when is_list(cols) -> cols
     end
   end
 
@@ -142,11 +151,11 @@ defmodule Tabula do
 
   defp strlen(x), do: render_cell(x) |> String.length()
 
-  defp values(cols, {row, index}, _opts) do
+  defp values(cols, {row, index}) do
     cols
     |> map(fn (@index) -> index+1
-              (col)    -> Map.get(row, col)
-           end)
+      (col) -> Row.get(row, col)
+    end)
   end
 
   defp style(style, opts) do
