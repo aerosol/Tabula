@@ -1,7 +1,7 @@
 # Tabula
 
-Tabula can transform a collection of maps (structs too, e.g.
-[Ecto](https://github.com/elixir-lang/ecto) models)
+Tabula can transform a list of maps (structs too, e.g.
+[Ecto](https://github.com/elixir-lang/ecto) models) or Keywords
 into an ASCII/GitHub Markdown table.
 
 It's a weekend-over-beer-project of mine, loosely based on
@@ -121,5 +121,7 @@ If time permits I would like to implement the following extensions (contribution
 Adam Rutkowski - https://twitter.com/hq1aerosol
 
 Adrian Gruntkowski - https://twitter.com/adrgrunt
+
+Gian D - https://twitter.com/fusillicode
 
 Wojtek Mach - https://twitter.com/wojtekmach
