@@ -47,6 +47,7 @@ defmodule Tabula do
   end
 
   defprotocol Row do
+    @fallback_to_any true
     def get(row, col, default \\ nil)
     def keys(row)
   end
@@ -59,6 +60,11 @@ defmodule Tabula do
   defimpl Row, for: List do
     def get(row, col, default \\ nil), do: row |> Keyword.get(col, default)
     def keys(row), do: row |> Keyword.keys
+  end
+
+  defimpl Row, for: Any do
+    def get(%{__struct__: _} = row, col, default \\ nil), do: row |> Map.get(col, default)
+    def keys(row), do: row |> Map.from_struct |> Map.keys
   end
 
   def print_table(rows, opts \\ []) do
