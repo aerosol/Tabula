@@ -2,7 +2,6 @@ defmodule Tabula do
   import Enum, only: [
     concat: 2,
     intersperse: 2,
-    join: 1,
     map: 2,
     max: 1,
     with_index: 1,
@@ -157,9 +156,8 @@ defmodule Tabula do
   end
 
   defp spacers(widths, opts) do
-    map widths, &(Stream.repeatedly(fn -> style(:spacer, opts) end)
-                |> Stream.take(&1)
-                |> join)
+    spacer = style(:spacer, opts)
+    map widths, &(String.duplicate(spacer, &1))
   end
 
   defp strlen(x) do
