@@ -1,8 +1,7 @@
 defmodule Tabula do
   @moduledoc """
-    Tabula can transform a list of maps (structs too, e.g.
-    [Ecto](https://github.com/elixir-lang/ecto) models) or Keywords
-    into an ASCII/GitHub Markdown table.
+  Tabula can transform a list of maps (structs too, e.g. Ecto schemas) 
+  or Keywords into an ASCII/GitHub Markdown table.
   """
 
   import Enum, only: [
