@@ -1,5 +1,7 @@
 # Tabula
 
+![](https://travis-ci.org/aerosol/Tabula.svg?branch=master)
+
 Tabula can transform a list of maps (structs too, e.g.
 [Ecto](https://github.com/elixir-lang/ecto) models) or Keywords
 into an ASCII/GitHub Markdown table.
