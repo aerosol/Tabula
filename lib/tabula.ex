@@ -1,4 +1,10 @@
 defmodule Tabula do
+  @moduledoc """
+    Tabula can transform a list of maps (structs too, e.g.
+    [Ecto](https://github.com/elixir-lang/ecto) models) or Keywords
+    into an ASCII/GitHub Markdown table.
+  """
+
   import Enum, only: [
     concat: 2,
     intersperse: 2,
@@ -71,13 +77,17 @@ defmodule Tabula do
     end
   end
 
-  def print_table(rows, opts \\ []), do: IO.puts render_table(rows, opts)
+  def print_table(rows, opts \\ []) do
+    rows
+    |> render_table(opts)
+    |> IO.puts()
+  end
 
   def render_table(rows, opts \\ []) do
     rows
     |> extract_cols(opts)
     |> render_table(rows, opts)
-    |> :erlang.list_to_binary
+    |> :erlang.list_to_binary()
   end
 
   defp render_table([_ | _] = cols, rows, opts) do
@@ -85,26 +95,32 @@ defmodule Tabula do
     formatters = formatters(widths, opts)
     spacers    = spacers(widths, opts)
 
-    [ render_row(cols, :heading, formatters, opts),
+    [
+      render_row(cols, :heading, formatters, opts),
       render_row(spacers, :heading_border, formatters, opts),
 
       rows
-      |> with_index
+      |> with_index()
       |> map(fn indexed_row ->
-              cols
-              |> values(indexed_row)
-              |> render_row(:row, formatters, opts)
-             end) ]
+        cols
+        |> values(indexed_row)
+        |> render_row(:row, formatters, opts)
+      end)
+    ]
   end
 
   def max_widths(cols, rows) do
     max_index =
       rows
-      |> length
-      |> strlen
+      |> length()
+      |> strlen()
 
     map(cols, fn k ->
-      max([ strlen(k), max_index | map(rows, &strlen(Row.get(&1, k))) ])
+      max([
+        strlen(k),
+        max_index
+        | map(rows, &strlen(Row.get(&1, k)))
+      ])
     end)
   end
 
@@ -138,7 +154,7 @@ defmodule Tabula do
 
   defp formatters(widths, _opts) do
     map(widths, fn w ->
-      fn @index=cell ->
+      fn @index = cell ->
            # need to rjust '#' orelse github fails to render
            String.rjust(cell, w)
          cell when is_binary(cell) ->
@@ -157,13 +173,13 @@ defmodule Tabula do
 
   defp spacers(widths, opts) do
     spacer = style(:spacer, opts)
-    map widths, &(String.duplicate(spacer, &1))
+    map(widths, &String.duplicate(spacer, &1))
   end
 
   defp strlen(x) do
     x
     |> render_cell
-    |> String.length
+    |> String.length()
   end
 
   defp values(cols, {row, index}) do
