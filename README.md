@@ -1,6 +1,6 @@
 # Tabula
 
-![](https://travis-ci.org/aerosol/Tabula.svg?branch=master)
+[![Build Status](https://travis-ci.org/aerosol/Tabula.svg?branch=master)](https://travis-ci.org/aerosol/Tabula)
 ![](https://img.shields.io/hexpm/v/tabula.svg)
 
 Tabula can transform a list of maps (structs too, e.g.
