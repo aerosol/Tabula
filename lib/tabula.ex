@@ -154,18 +154,18 @@ defmodule Tabula do
   defp formatters(widths, _opts) do
     map(widths, fn w ->
       fn @index = cell ->
-           # need to rjust '#' orelse github fails to render
-           String.rjust(cell, w)
+           # need to pad_leading '#' orelse github fails to render
+           String.pad_leading(cell, w)
          cell when is_binary(cell) ->
-           String.ljust(cell, w)
+           String.pad_trailing(cell, w)
          cell when is_number(cell) ->
            cell
            |> render_cell()
-           |> String.rjust(w)
+           |> String.pad_leading(w)
          cell ->
            cell
            |> render_cell()
-           |> String.ljust(w)
+           |> String.pad_trailing(w)
       end
     end)
   end
