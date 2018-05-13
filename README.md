@@ -1,7 +1,7 @@
 # Tabula
 
 [![Build Status](https://travis-ci.org/aerosol/Tabula.svg?branch=master)](https://travis-ci.org/aerosol/Tabula)
-![](https://img.shields.io/hexpm/v/tabula.svg)
+[![Hex.pm](https://img.shields.io/hexpm/v/tabula.svg)](https://hex.pm/packages/tabula)
 
 Tabula can transform a list of maps (structs too, e.g.
 [Ecto](https://github.com/elixir-lang/ecto) models) or Keywords
