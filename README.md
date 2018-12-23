@@ -16,7 +16,7 @@ It's a weekend-over-beer-project of mine, loosely based on
 
    ```elixir
    def deps do
-     [{:tabula, "~> 2.1.1"}]
+     [{:tabula, "~> 2.2.3"}]
    end
    ```
 
