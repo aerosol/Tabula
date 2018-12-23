@@ -4,31 +4,31 @@ defmodule Tabula do
   or Keywords into an ASCII/GitHub Markdown table.
   """
 
-  import Enum, only: [
-    concat: 2,
-    intersperse: 2,
-    map: 2,
-    max: 1,
-    with_index: 1,
-    zip: 2
-  ]
+  import Enum,
+    only: [
+      concat: 2,
+      intersperse: 2,
+      map: 2,
+      max: 1,
+      with_index: 1,
+      zip: 2
+    ]
 
   @index "#"
   @newline '\n'
 
-  @sheets \
-  org_mode: [
-    heading:        " | ",
-    heading_border: "-+-",
-    row:            " | ",
-    spacer:         "-"
-  ],
-  github_md: [
-    heading:        " | ",
-    heading_border: " | ",
-    row:            " | ",
-    spacer:         "-"
-  ]
+  @sheets org_mode: [
+            heading: " | ",
+            heading_border: "-+-",
+            row: " | ",
+            spacer: "-"
+          ],
+          github_md: [
+            heading: " | ",
+            heading_border: " | ",
+            row: " | ",
+            spacer: "-"
+          ]
 
   @default_sheet :org_mode
 
@@ -37,16 +37,17 @@ defmodule Tabula do
       def print_table(rows) do
         unquote(__MODULE__).print_table(rows, unquote(opts))
       end
+
       def print_table(rows, override_opts) do
-        unquote(__MODULE__).print_table(
-          rows, Keyword.merge(unquote(opts), override_opts))
+        unquote(__MODULE__).print_table(rows, Keyword.merge(unquote(opts), override_opts))
       end
+
       def render_table(rows) do
         unquote(__MODULE__).render_table(rows, unquote(opts))
       end
+
       def render_table(rows, override_opts) do
-        unquote(__MODULE__).render_table(
-          rows, Keyword.merge(unquote(opts), override_opts))
+        unquote(__MODULE__).render_table(rows, Keyword.merge(unquote(opts), override_opts))
       end
     end
   end
@@ -69,10 +70,11 @@ defmodule Tabula do
 
   defimpl Row, for: Any do
     def get(%{__struct__: _} = row, col, default \\ nil), do: Map.get(row, col, default)
+
     def keys(%{__struct__: _} = row) do
       row
-      |> Map.from_struct
-      |> Map.keys
+      |> Map.from_struct()
+      |> Map.keys()
     end
   end
 
@@ -90,14 +92,13 @@ defmodule Tabula do
   end
 
   defp render_table([_ | _] = cols, rows, opts) do
-    widths     = max_widths(cols, rows)
+    widths = max_widths(cols, rows)
     formatters = formatters(widths, opts)
-    spacers    = spacers(widths, opts)
+    spacers = spacers(widths, opts)
 
     [
       render_row(cols, :heading, formatters, opts),
       render_row(spacers, :heading_border, formatters, opts),
-
       rows
       |> with_index()
       |> map(fn indexed_row ->
@@ -126,7 +127,7 @@ defmodule Tabula do
   defp extract_cols([first | _], opts) do
     case opts[:only] do
       cols when is_list(cols) -> cols
-      nil                     -> Row.keys(first)
+      nil -> Row.keys(first)
     end
   end
 
@@ -142,6 +143,7 @@ defmodule Tabula do
 
   defp render_cell(v) when is_binary(v), do: v
   defp render_cell(v) when is_number(v), do: inspect(v)
+
   defp render_cell(%{__struct__: _} = v) do
     if String.Chars.impl_for(v) do
       to_string(v)
@@ -149,23 +151,28 @@ defmodule Tabula do
       inspect(v)
     end
   end
+
   defp render_cell(v), do: inspect(v)
 
   defp formatters(widths, _opts) do
     map(widths, fn w ->
-      fn @index = cell ->
-           # need to pad_leading '#' orelse github fails to render
-           String.pad_leading(cell, w)
-         cell when is_binary(cell) ->
-           String.pad_trailing(cell, w)
-         cell when is_number(cell) ->
-           cell
-           |> render_cell()
-           |> String.pad_leading(w)
-         cell ->
-           cell
-           |> render_cell()
-           |> String.pad_trailing(w)
+      fn
+        @index = cell ->
+          # need to pad_leading '#' orelse github fails to render
+          String.pad_leading(cell, w)
+
+        cell when is_binary(cell) ->
+          String.pad_trailing(cell, w)
+
+        cell when is_number(cell) ->
+          cell
+          |> render_cell()
+          |> String.pad_leading(w)
+
+        cell ->
+          cell
+          |> render_cell()
+          |> String.pad_trailing(w)
       end
     end)
   end
@@ -182,9 +189,10 @@ defmodule Tabula do
   end
 
   defp values(cols, {row, index}) do
-    map(cols, fn (@index) -> index + 1
-                 (col)    -> Row.get(row, col)
-              end)
+    map(cols, fn
+      @index -> index + 1
+      col -> Row.get(row, col)
+    end)
   end
 
   defp style(style, opts) do

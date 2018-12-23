@@ -4,18 +4,22 @@ defmodule Tabula.Mixfile do
   @version "2.2.2"
 
   def project do
-    [app: :tabula,
+    [
+      app: :tabula,
       version: @version,
       elixir: "~> 1.3",
-      build_embedded: Mix.env == :prod,
-      start_permanent: Mix.env == :prod,
+      build_embedded: Mix.env() == :prod,
+      start_permanent: Mix.env() == :prod,
       description: "Pretty printer for maps/structs collections",
       package: package(),
       deps: deps(),
-      docs: [source_ref: "#{@version}",
-             source_url: "https://github.com/aerosol/Tabula",
-             main: "readme",
-             extras: ["README.md"]]]
+      docs: [
+        source_ref: "#{@version}",
+        source_url: "https://github.com/aerosol/Tabula",
+        main: "readme",
+        extras: ["README.md"]
+      ]
+    ]
   end
 
   def application do
@@ -31,8 +35,10 @@ defmodule Tabula.Mixfile do
   end
 
   defp package do
-    [maintainers: ["Adam Rutkowski"],
-     licenses: ["MIT"],
-     links: %{"GitHub" => "https://github.com/aerosol/Tabula"}]
+    [
+      maintainers: ["Adam Rutkowski"],
+      licenses: ["MIT"],
+      links: %{"GitHub" => "https://github.com/aerosol/Tabula"}
+    ]
   end
 end
