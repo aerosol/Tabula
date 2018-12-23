@@ -140,7 +140,7 @@ defmodule TabulaTest do
     l = String.length("10000")
 
     rows =
-      1..10000
+      1..10_000
       |> Enum.map(&%{"index" => &1})
 
     widths = Tabula.max_widths(["#", "index"], rows)
