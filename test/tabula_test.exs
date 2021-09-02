@@ -24,10 +24,10 @@ defmodule TabulaTest do
   test "Special column '#' can be provided to enumerate rows" do
     table = Tabula.render_table(@rows, only: ["#"|@cols])
     expect = """
-      # | name    | age | city    
-    ----+---------+-----+---------
-      1 | Adam    |  32 | Warsaw  
-      2 | Yolanda |  28 | New York
+    |   # | name    | age | city     |
+    |-----+---------+-----+----------|
+    |   1 | Adam    |  32 | Warsaw   |
+    |   2 | Yolanda |  28 | New York |
     """
     assert table == expect
   end
@@ -37,10 +37,10 @@ defmodule TabulaTest do
       Tabula.print_table @rows
     end
     expect = """
-    age | city     | name   
-    ----+----------+--------
-     32 | Warsaw   | Adam   
-     28 | New York | Yolanda
+    | age | city     | name    |
+    |-----+----------+---------|
+    |  32 | Warsaw   | Adam    |
+    |  28 | New York | Yolanda |
 
     """
     assert capture_io(table) == expect
@@ -49,10 +49,10 @@ defmodule TabulaTest do
   test "Github Markdown style can be applied" do
     table = Tabula.render_table(@rows, only: Enum.sort(@cols), style: :github_md)
     expect = """
-    age | city     | name   
-    --- | -------- | -------
-     32 | Warsaw   | Adam   
-     28 | New York | Yolanda
+    | age | city     | name    |
+    | --- | -------- | ------- |
+    |  32 | Warsaw   | Adam    |
+    |  28 | New York | Yolanda |
     """
     assert table == expect
   end
@@ -60,10 +60,10 @@ defmodule TabulaTest do
   test "Columns not found are represented by `nil`" do
     table = Tabula.render_table(@rows, only: ["phone", "email"])
     expect = """
-    phone | email
-    ------+------
-    nil   | nil  
-    nil   | nil  
+    | phone | email |
+    |-------+-------|
+    | nil   | nil   |
+    | nil   | nil   |
     """
     assert table == expect
   end
@@ -101,21 +101,21 @@ defmodule TabulaTest do
     end
 
     e1 = """
-    cruel | hello
-    ----- | -----
-    true  | world
+    | cruel | hello |
+    | ----- | ----- |
+    | true  | world |
     """
 
     e2 = """
-    cruel
-    -----
-    true 
+    | cruel |
+    | ----- |
+    | true  |
     """
 
     e3 = """
-      # | cruel
-    ----+------
-      1 | true 
+    |   # | cruel |
+    |-----+-------|
+    |   1 | true  |
     """
 
     assert Bar.t1 == e1
@@ -137,10 +137,10 @@ defmodule TabulaTest do
     table = Tabula.render_table(rows)
 
     expect = """
-    :name   | :point                        | :version
-    --------+-------------------------------+---------
-    ecto    | %TabulaTest.Point{x: 0, y: 0} | 2.0.4   
-    phoenix | %TabulaTest.Point{x: 1, y: 0} | 1.2.0   
+    | :name   | :point                        | :version |
+    |---------+-------------------------------+----------|
+    | ecto    | %TabulaTest.Point{x: 0, y: 0} | 2.0.4    |
+    | phoenix | %TabulaTest.Point{x: 1, y: 0} | 1.2.0    |
     """
     assert table == expect
   end
@@ -153,10 +153,10 @@ defmodule TabulaTest do
     table = Tabula.render_table(rows)
 
     expect = """
-    :name   | :point                        | :version
-    --------+-------------------------------+---------
-    ecto    | %TabulaTest.Point{x: 0, y: 0} | 2.0.4   
-    phoenix | %TabulaTest.Point{x: 1, y: 0} | 1.2.0   
+    | :name   | :point                        | :version |
+    |---------+-------------------------------+----------|
+    | ecto    | %TabulaTest.Point{x: 0, y: 0} | 2.0.4    |
+    | phoenix | %TabulaTest.Point{x: 1, y: 0} | 1.2.0    |
     """
     assert table == expect
   end
@@ -166,10 +166,10 @@ defmodule TabulaTest do
     table = Tabula.render_table(rows)
 
     expect = """
-    :x | :y
-    ---+---
-     0 |  0
-     1 |  0
+    | :x | :y |
+    |----+----|
+    |  0 |  0 |
+    |  1 |  0 |
     """
     assert table == expect
   end

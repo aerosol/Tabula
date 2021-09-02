@@ -18,16 +18,24 @@ defmodule Tabula do
 
   @sheets \
   org_mode: [
-    heading:        " | ",
-    heading_border: "-+-",
-    row:            " | ",
-    spacer:         "-"
+    heading:                    " | ",
+    heading_border:             "-+-",
+    heading_left_outer_border:  "|-",
+    heading_right_outer_border: "-|",
+    left_outer_border:          "| ",
+    right_outer_border:         " |",
+    row:                        " | ",
+    spacer:                     "-"
   ],
   github_md: [
-    heading:        " | ",
-    heading_border: " | ",
-    row:            " | ",
-    spacer:         "-"
+    heading:                    " | ",
+    heading_border:             " | ",
+    heading_left_outer_border:  "| ",
+    heading_right_outer_border: " |",
+    left_outer_border:          "| ",
+    right_outer_border:         " |",
+    row:                        " | ",
+    spacer:                     "-"
   ]
 
   @default_sheet :org_mode
@@ -132,12 +140,16 @@ defmodule Tabula do
 
   defp render_row(cells, style_element, formatters, opts) do
     separator = style(style_element, opts)
+    {left_outer_border, right_outer_border} =
+      outer_border_style(style_element, opts)
 
-    cells
-    |> zip(formatters)
-    |> map(fn {k, f} -> f.(k) end)
-    |> intersperse(separator)
-    |> concat(@newline)
+    row =
+      cells
+      |> zip(formatters)
+      |> map(fn {k, f} -> f.(k) end)
+      |> intersperse(separator)
+
+    concat([left_outer_border, row, right_outer_border], @newline)
   end
 
   defp render_cell(v) when is_binary(v), do: v
@@ -185,6 +197,16 @@ defmodule Tabula do
     map(cols, fn (@index) -> index + 1
                  (col)    -> Row.get(row, col)
               end)
+  end
+
+  defp outer_border_style(:heading_border, opts) do
+    {style(:heading_left_outer_border, opts),
+     style(:heading_right_outer_border, opts)}
+  end
+
+  defp outer_border_style(style, opts) when style in [:heading, :row] do
+    {style(:left_outer_border, opts),
+     style(:right_outer_border, opts)}
   end
 
   defp style(style, opts) do
